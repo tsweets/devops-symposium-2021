@@ -1,0 +1,10 @@
+---
+- name: Ensure EPEL is installed
+  package:
+    name: "epel-release"
+    state: present
+
+- name: Ensure nginx is installed.
+  package:
+    name: "nginx"
+    state: present

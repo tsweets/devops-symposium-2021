@@ -1,0 +1,5 @@
+---
+# handlers file for base
+- name: update ca trust
+  shell: /usr/sbin/update-ca-certificates
+

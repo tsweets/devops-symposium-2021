@@ -1,0 +1,17 @@
+---
+# tasks file for host-cert
+- name: Create Host Cert File
+  template:
+    src: host.crt.j2
+    dest: /etc/ssl/certs/host.crt
+    owner: root
+    group: root
+    mode: 0664
+
+- name: Create Host key File
+  template:
+    src: host.key.j2
+    dest: /etc/ssl/private/host.key
+    owner: root
+    group: root
+    mode: 0664

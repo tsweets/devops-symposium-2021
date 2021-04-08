@@ -1,0 +1,27 @@
+---
+# tasks file for gitea
+- name: Install gpg-agent
+  apt:
+    name: gpg-agent
+    state: present
+    update_cache: yes
+
+- name: Add Gitea Repo Key
+  ansible.builtin.apt_key:
+    url: https://packaging.gitlab.io/gitea/gpg.key
+    state: present
+- name: Add Gitea Repo
+  ansible.builtin.apt_repository:
+    #repo: deb http://archive.canonical.com/ubuntu hardy partner
+    repo: deb https://packaging.gitlab.io/gitea gitea main
+    state: present
+- name: Install gitea
+  apt:
+    name: gitea
+    state: present
+
+- name: Ensure gitea service is running as configured.
+  service:
+    name: gitea
+    state: "started"
+    enabled: "true"

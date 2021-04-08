@@ -1,0 +1,9 @@
+- name: Create CA Cert File
+  template:
+    src: ca.crt.j2
+    dest: /usr/local/share/ca-certificates/skyline-root-ca.crt
+    owner: root
+    group: root
+    mode: 0644
+  when: cert_ca_public is defined
+  notify: update ca trust
