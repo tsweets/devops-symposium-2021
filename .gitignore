@@ -3,7 +3,8 @@
 /ansible/.vagrant/*
 /downloads/
 
-
+.cache
+/terraform/terraform-provider-proxmox
 # Local .terraform directories
 **/.terraform/*
 
