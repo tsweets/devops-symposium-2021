@@ -1,0 +1,85 @@
+---
+- hosts: build_server
+  vars_files:
+    - secrets.yml
+  become: yes
+  become_user: root
+  vars:
+    nginx_vhosts:
+      - listen: "443 ssl http2"
+        server_name: "build-server.isactn.skyline.lan"
+       # root: "/var/www/example.com"
+       # index: "index.php index.html index.htm"
+
+        #server_name: "build-server.isactn.skyline.lan"
+        access_log: "/var/log/nginx/access.log"
+        error_log: "/var/log/nginx/error.log"
+        state: "present"
+        template: "{{ nginx_vhost_template }}"
+        filename: "vhosts.conf"
+      #  filename: "example.com.conf"
+        extra_parameters: |
+          location / {
+            proxy_pass http://127.0.0.1:8080;
+          }
+          ssl_certificate     /etc/ssl/certs/host.crt;
+          ssl_certificate_key /etc/ssl/private/host.key;
+          ssl_protocols       TLSv1.1 TLSv1.2;
+          ssl_ciphers         HIGH:!aNULL:!MD5;
+    host_key: |
+      -----BEGIN RSA PRIVATE KEY-----
+      MIIEpQIBAAKCAQEAtandjaAkiUzsxMTEn6zFPb70L/fp5Gpjk6EDR7B3GHeZur1h
+      NeW+heH5GtSkNpfWbFggU+hS9ybiy0hwvy99KvSZVwgh2/LOrhMTkzy72WSjXd3H
+      vWuU0vWlJ4Z0oHwHi7p7+oq1AHPVGSndDK9jyIz6PWgfzDIOc/IoEYthxMBm6nqP
+      qAVe0Ts0J1Geza96i9lgHshwwWGWremZbU4Q9BOXRYl+h9kYSdAt5Ku6CNioOnGR
+      pWBPr/uMGMonWG6ifGqaUblfiSDUgkaef9KFobkj4cZB1dnnkbaqqyhEdE+od0v7
+      xcksufV14Ftu8d3mSwiK8TfXe4Yf6yyfnsP2aQIDAQABAoIBAFxRo8bqYEbqMdTZ
+      Tjb7HQ2A8iVCbrlmm44VoE4ZTpy/gv9UaId0ZrsxGF/bOkyIIy7SJjOd+DOjrlOy
+      T6HJJ2nh/d8twc89+GycQzFrBue2bhMwtuX7OxluPmz0tmYsQcVvkrvDK7K8Kspr
+      7OsaYrIzeqQkOyyRL6kaoeQwmhHa/KOqFjejZ3raSGb7KD4K5yiQ3AA6ps9xt/PR
+      Lk4mfDwGeOclb1qD7dzc1bT2NwgqxWrm5ilUDgFxPb2nn9Y5+sM08DWBrInHacRZ
+      TwX+D6w/vTCC/znVHNcfwGpn3hs2UGuXXHcmupPqACuzb3b0w96jCEOR6B0VzY38
+      ERRFNoECgYEA8SbLPllCIvzwtnJ6ztxEsWSou5XS6jAMkJdQD3+MPYVf9JjNXf0B
+      izAtmd8aMsRuOn5yKV0ob0fdHBIUfil69deFWtFYJzDIFqr3+AMUyjMWlrBb1yGD
+      qNG91ZBaREyihELqF12Hracp0Rqg6oElbokYsnNhgDyOAAnO11st+rkCgYEAwNlg
+      2rjRD5VmzmfBFqJxz0iIt+WNwdSEG8KbpNokiI3RrMsMR0hprUz124AZoE6aFp4i
+      EMD42C2lQgvRf2p6T9Hy1at8m1wLU4fKGdQ+dgsfN084/pJUPc9wwOstP4mbcylS
+      uet6lhrijIIe8M1Tf7PNV3IFkb2VHAARuzG+QTECgYEA3EbrcFBoMT2LQ5zewQZD
+      WSbxWihJONIbKBiPcRi5KZkjRXIuZaQuPM4NWXiJncYASj4mWdJWlQ+30WRSg8uw
+      HdB4Z7TCKUpN+ybAyzNFUk3IXG1L9v8OHK86EFKDoc++w8G7wwwUW3NOp0sDojHF
+      12ozvQ3YCiNGMpLC9cS8A0ECgYEArnm9PAWr95pmyeVq92x+5Vetghtolm4MHAWE
+      xbArD3Snt9p4wGFOYuFXKoEKLlQO6tmk3l2IhiU997QzlUCjamX7er9M3E55XNhk
+      y9uPq0LCukqtuPxwxP9R9uiPJoX8I0PGubjHTtkCELeFAL3zhn0JEc1yJnpMVmnl
+      oOQPSnECgYEAhTTIDbel05e80gZZt7G/CgjWSXybyxi4kBXRc6/Z1PU6HoZiE9sM
+      NPcWossRYWtXynYeeDb1AiEBDpNZm3Ptga6IcVo6FeTtNooJJkSzFAuTroKpqMLd
+      YyxRVGqJvY7vmeCpG7pZon9H1E6uLXGYClGVuIK79kzDAs1udzxBR+U=
+      -----END RSA PRIVATE KEY-----
+    host_cert: |
+      -----BEGIN CERTIFICATE-----
+      MIID1zCCAr+gAwIBAgIQDavgwE8R09RHHt7iPgldhDANBgkqhkiG9w0BAQsFADAX
+      MRUwEwYDVQQDDAxTeW1wb3NpdW0gQ0EwHhcNMjEwNDA4MjE0MTUzWhcNMjMwNzEy
+      MjE0MTUzWjBpMQswCQYDVQQGEwJVUzERMA8GA1UECAwIQ29sb3JhZG8xDzANBgNV
+      BAcMBkF1cm9yYTEPMA0GA1UECgwGaXNhY3RuMSUwIwYDVQQDDBxnaXRlYS5sb3cu
+      aXNhY3RuLnNreWxpbmUubGFuMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+      AQEAtandjaAkiUzsxMTEn6zFPb70L/fp5Gpjk6EDR7B3GHeZur1hNeW+heH5GtSk
+      NpfWbFggU+hS9ybiy0hwvy99KvSZVwgh2/LOrhMTkzy72WSjXd3HvWuU0vWlJ4Z0
+      oHwHi7p7+oq1AHPVGSndDK9jyIz6PWgfzDIOc/IoEYthxMBm6nqPqAVe0Ts0J1Ge
+      za96i9lgHshwwWGWremZbU4Q9BOXRYl+h9kYSdAt5Ku6CNioOnGRpWBPr/uMGMon
+      WG6ifGqaUblfiSDUgkaef9KFobkj4cZB1dnnkbaqqyhEdE+od0v7xcksufV14Ftu
+      8d3mSwiK8TfXe4Yf6yyfnsP2aQIDAQABo4HMMIHJMAkGA1UdEwQCMAAwHQYDVR0O
+      BBYEFM4OvRVA94voMobGFCOxiayvabghMFIGA1UdIwRLMEmAFMwJeOEk67eiHWcU
+      l7zHIw+XhBgPoRukGTAXMRUwEwYDVQQDDAxTeW1wb3NpdW0gQ0GCFD70XfkWPa2e
+      HcKTfYv1c7pjnEoeMBMGA1UdJQQMMAoGCCsGAQUFBwMBMAsGA1UdDwQEAwIFoDAn
+      BgNVHREEIDAeghxnaXRlYS5sb3cuaXNhY3RuLnNreWxpbmUubGFuMA0GCSqGSIb3
+      DQEBCwUAA4IBAQBjY9uUeuy+dC+OVQoson+98wnYtbxBehtk3wJ3W2qUaBTRB61S
+      jSS99sLTNqKSKD+2kdB6CfVPeIKlN9Xwq+T31diVZ/mnLjlabl03Qwt8c5TSmq+8
+      A6RWxkm48FZdW/JTHp9EX6PHxUlQ+nHvqgxTgugU1lYO4qbYaKsJ8YERUp6BKcUM
+      iPHjri9a6G69GXbut7k+cf6899g6fTPORv6w0i0tehsweYrWSkGsONC3qmX3oOi8
+      H+QkiKrxIlUlLIPWeR25ceAiMw/QY40dhHbgmF0zOC77vMQ0Nvo7mLtq/jyOK3QI
+      7BBbvtgbFAIT8OLv1KorilKTfbmU3bP6Ak76
+      -----END CERTIFICATE-----
+  roles:
+    - base
+    - host-cert
+    - nginx-proxy
+    - jenkins

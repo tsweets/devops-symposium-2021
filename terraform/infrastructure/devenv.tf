@@ -24,10 +24,7 @@ resource "proxmox_lxc" "lxc-gitea" {
     bridge = "vmbr0"
     ip = "10.220.1.155/24"
     gw = "10.220.1.1"
-
   }
-
-
   rootfs {
     storage = "local-lvm"
     size    = "8G"
@@ -39,5 +36,25 @@ resource "proxmox_lxc" "lxc-gitea" {
   nameserver = "10.220.1.1"
   searchdomain = "isactn.skyline.lan"
   start = true
+}
 
+resource "proxmox_lxc" "lxc-jenkins" {
+  hostname = "jenkins.isactn.skyline.lan"
+  network {
+    name = "eth0"
+    bridge = "vmbr0"
+    ip = "10.220.1.156/24"
+    gw = "10.220.1.1"
+  }
+  rootfs {
+    storage = "local-lvm"
+    size    = "8G"
+  }
+  ostemplate = "local:vztmpl/ubuntu-20.04-rootlogin_20.04-1_amd64.tar.gz"
+  password = "password"
+  target_node = "proxmox"
+  unprivileged = true
+  nameserver = "10.220.1.1"
+  searchdomain = "isactn.skyline.lan"
+  start = true
 }

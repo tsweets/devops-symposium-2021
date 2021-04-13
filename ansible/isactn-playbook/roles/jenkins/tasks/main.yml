@@ -1,0 +1,42 @@
+---
+# tasks file for jenkins
+
+- name: Install gpg-agent
+  apt:
+    name: gpg-agent
+    state: present
+    update_cache: yes
+
+- name: Ensure 'man' directory exists.
+  file:
+    path: /usr/share/man/man1
+    state: directory
+    recurse: true
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - ansible_distribution_major_version | int >= 18
+- name: Install JDK 11
+  apt:
+   name: openjdk-11-jdk
+   state: present
+
+- name: Add Jenkins Repo Key
+  ansible.builtin.apt_key:
+    url: https://pkg.jenkins.io/debian-stable/jenkins.io.key
+    state: present
+
+- name: Add Jenkins Repo
+  ansible.builtin.apt_repository:
+    repo: deb https://pkg.jenkins.io/debian-stable binary/
+    state: present
+
+- name: Install Jenkins
+  apt:
+    name: jenkins
+    state: present
+
+- name: Ensure jenkins service is running as configured.
+  service:
+    name: jenkins
+    state: "started"
+    enabled: "true"

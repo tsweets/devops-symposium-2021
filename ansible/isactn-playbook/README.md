@@ -54,5 +54,9 @@ Running if you don't have automatic vault password setup
 1. Create file ~/.ansible-pass (Should be a single line with the password)
 2. Export an env var in .bashrc like "ANSIBLE_VAULT_PASSWORD_FILE=~/.ansible/ansible-pass"
 
+
+## Infrastructure Created
+- Gitea https://gitea.isactn.skyline.lan
+- Jenkins http://jenkins.isactn.skyline.lan
 # TODOs
 - use vault for root pass
