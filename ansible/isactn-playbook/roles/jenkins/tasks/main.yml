@@ -35,8 +35,20 @@
     name: jenkins
     state: present
 
+# Configure Jenkins init settings.
+- include_tasks: settings.yml
+
 - name: Ensure jenkins service is running as configured.
   service:
     name: jenkins
     state: "started"
     enabled: "true"
+
+
+- name: Remove Jenkins security init scripts after first startup.
+  file:
+    path: "{{ jenkins_home }}/init.groovy.d/basic-security.groovy"
+    state: absent
+
+# Update Jenkins and install configured plugins.
+- include_tasks: plugins.yml

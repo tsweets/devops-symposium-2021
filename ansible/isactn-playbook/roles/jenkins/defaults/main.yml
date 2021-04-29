@@ -1,2 +1,34 @@
 ---
 # defaults file for jenkins
+jenkins_url_prefix: ""
+jenkins_java_options_env_var: JAVA_ARGS
+jenkins_java_options: "-Djenkins.install.runSetupWizard=false"
+
+
+jenkins_admin_username: admin
+jenkins_admin_password: admin
+jenkins_admin_password_file: ""
+jenkins_home: /var/lib/jenkins
+jenkins_http_port: 8080
+jenkins_updates_url: "https://updates.jenkins.io"
+
+
+jenkins_process_user: jenkins
+jenkins_process_group: "{{ jenkins_process_user }}"
+
+jenkins_init_changes:
+  - option: "JENKINS_ARGS"
+    value: "--prefix={{ jenkins_url_prefix }}"
+  - option: "{{ jenkins_java_options_env_var }}"
+    value: "{{ jenkins_java_options }}"
+
+jenkins_proxy_host: ""
+jenkins_proxy_port: ""
+jenkins_proxy_noproxy:
+  - "127.0.0.1"
+  - "localhost"
+
+jenkins_plugins: []
+#  - blueocean
+#  - name: influxdb
+#    version: "1.12.1"
